@@ -29,15 +29,6 @@ function createStore(reducer) {
   return {getState, subscribe, dispatch};
 }
 
-const store = createStore(todos);
-
-const unsubscribe = store.subscribe(() => {
-  console.log('The state changed to: ', state);
-})
-
-const unsubscribe = store.subscribe(() => {console.log('The store changed.')})
-
-
 // ---- App Code ----
 // This is code a user would implement to define changes to the
 // state based on actions.
@@ -52,3 +43,13 @@ function todos(state = [], action) {
 
   return state;
 }
+
+// Use the store
+const store = createStore(todos);
+
+const unsubscribe = store.subscribe(() => {
+  console.log('The state changed to: ', store.getState());
+})
+
+store.dispatch(
+    {type: 'ADD_TODO', todo: {id: 0, name: 'Learn Redux', complete: false}})
