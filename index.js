@@ -33,7 +33,7 @@ function createStore(reducer) {
 // This is code a user would implement to define changes to the
 // state based on actions.
 
-// Reducer function
+// Reducer function for Todos
 // Initialize state to an empty array, because the first time the
 // function is called, the state is undefined.
 function todos(state = [], action) {
@@ -48,6 +48,18 @@ function todos(state = [], action) {
               (todo.id !== action.id ?
                    todo :
                    Object.assign({}, todo, {complete: !todo.complete})));
+    default:
+      return state;
+  }
+}
+
+// Reducer function for Goals
+function goals(state = [], action) {
+  switch (action.type) {
+    case 'ADD_GOAL':
+      return state.concat([action.goal]);
+    case 'REMOVE_GOAL':
+      return state.filter(goal => goal.id !== action.id);
     default:
       return state;
   }
