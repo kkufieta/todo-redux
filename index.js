@@ -1,6 +1,13 @@
 // ---- Library Code (State Management Library) ----
 // This is code that you'd download from NPM.
 
+
+// Helper function to create an id
+function generateId() {
+  return Math.random().toString(36).substring(2) +
+      (new Date()).getTime().toString(36);
+}
+
 // A function that mimics the Redux store behavior.
 // Implemented to
 function createStore(reducer) {
@@ -101,6 +108,7 @@ function app(state = {}, action) {
   return {todos: todos(state.todos, action), goals: goals(state.goals, action)};
 };
 
+
 // Use the store
 const store = createStore(app);
 
@@ -108,6 +116,7 @@ const unsubscribe = store.subscribe(() => {
   console.log('The state changed to: ', store.getState());
 })
 
+/*
 // Add todos
 store.dispatch(addTodoAction({id: 0, name: 'Learn Redux', complete: false}));
 store.dispatch(addTodoAction({id: 1, name: 'Read Book', complete: true}));
@@ -126,3 +135,24 @@ store.dispatch(toggleTodoAction(1))
 
 // Remove a goal
 store.dispatch(removeGoalAction(0))
+*/
+
+// Add functions for the UI to interact with
+function addTodo() {
+  const input = document.getElementById('todo');
+  const name = input.value;
+  input.value = '';
+
+  store.dispatch(addTodoAction({id: generateId(), name, complete: false}));
+}
+
+function addGoal() {
+  const input = document.getElementById('goal');
+  const name = input.value;
+  input.value = '';
+
+  store.dispatch(addGoalAction({id: generateId(), name}));
+}
+
+document.getElementById('todoBtn').addEventListener('click', addTodo)
+document.getElementById('goalBtn').addEventListener('click', addGoal)
