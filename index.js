@@ -20,15 +20,19 @@ function createStore() {
 
   const getState = () => state;
 
-  const subscribe =
-      (listener) => {
-        listeners.push(listener);
-        return () => {
-          listeners = listeners.filter(l => l !== listener)
-        }
-      }
+  const subscribe = (listener) => {
+    listeners.push(listener);
+    return () => {
+      listeners = listeners.filter(l => l !== listener)
+    }
+  };
 
-  return {getState, subscribe};
+  const dispatch = (action) => {
+    state = todos(state, action);
+    listeners.forEach(listener => listener());
+  };
+
+  return {getState, subscribe, dispatch};
 }
 
 const store = createStore();
