@@ -1,3 +1,12 @@
+// Initialize state to an empty array, because the first time the
+// function is called, the state is undefined.
+function todos(state = [], action) {
+  if (action.type === 'ADD_TODO') {
+    return state.concat([action.todo]);
+  }
+
+  return state;
+}
 // A function that mimics the Redux store behavior.
 // Implemented to
 function createStore() {
