@@ -1,39 +1,7 @@
-// ---- Library Code (State Management Library) ----
-// This is code that you'd download from NPM.
-
-
 // Helper function to create an id
 function generateId() {
   return Math.random().toString(36).substring(2) +
       (new Date()).getTime().toString(36);
-}
-
-// A function that mimics the Redux store behavior.
-// Implemented to
-function createStore(reducer) {
-  // The store should have 4 parts:
-  // 1. The state
-  // 2. Get the state
-  // 3. Listen to changes on the state.
-  // 4. Update the state
-  let state;
-  let listeners = [];
-
-  const getState = () => state;
-
-  const subscribe = (listener) => {
-    listeners.push(listener);
-    return () => {
-      listeners = listeners.filter(l => l !== listener)
-    }
-  };
-
-  const dispatch = (action) => {
-    state = reducer(state, action);
-    listeners.forEach(listener => listener());
-  };
-
-  return {getState, subscribe, dispatch};
 }
 
 // ---- App Code ----
@@ -101,16 +69,8 @@ function goals(state = [], action) {
   }
 };
 
-// Root reducer for the entire App
-// Initialize state to an empty object, because the first time the
-// function is called, the state is undefined.
-function app(state = {}, action) {
-  return {todos: todos(state.todos, action), goals: goals(state.goals, action)};
-};
-
-
 // Use the store
-const store = createStore(app);
+const store = Redux.createStore(Redux.combineReducers({todos, goals}));
 
 const unsubscribe = store.subscribe(() => {
   const {todos, goals} = store.getState();
@@ -121,27 +81,6 @@ const unsubscribe = store.subscribe(() => {
   todos.forEach(addTodoToDOM);
   goals.forEach(addGoalToDOM);
 })
-
-/*
-// Add todos
-store.dispatch(addTodoAction({id: 0, name: 'Learn Redux', complete: false}));
-store.dispatch(addTodoAction({id: 1, name: 'Read Book', complete: true}));
-store.dispatch(addTodoAction({id: 2, name: 'Learn C++', complete: false}));
-
-// Add goals
-store.dispatch(addGoalAction({id: 0, name: 'Finish React Nanodegree'}));
-store.dispatch(addGoalAction({id: 1, name: 'Finish C++ Nanodegree'}));
-store.dispatch(addGoalAction({id: 2, name: 'Heal injury'}));
-
-// Remove a todo
-store.dispatch(removeTodoAction(0))
-
-// Toggle a todo
-store.dispatch(toggleTodoAction(1))
-
-// Remove a goal
-store.dispatch(removeGoalAction(0))
-*/
 
 // Add functions for the UI to interact with
 function addTodo() {
