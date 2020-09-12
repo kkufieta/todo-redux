@@ -37,11 +37,20 @@ function createStore(reducer) {
 // Initialize state to an empty array, because the first time the
 // function is called, the state is undefined.
 function todos(state = [], action) {
-  if (action.type === 'ADD_TODO') {
-    return state.concat([action.todo]);
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([action.todo]);
+    case 'REMOVE_TODO':
+      return state.filter(todo => todo.id !== action.id);
+    case 'TOGGLE_TODO':
+      return state.map(
+          todo =>
+              (todo.id !== action.id ?
+                   todo :
+                   Object.assign({}, todo, {complete: !todo.complete})));
+    default:
+      return state;
   }
-
-  return state;
 }
 
 // Use the store
@@ -51,5 +60,16 @@ const unsubscribe = store.subscribe(() => {
   console.log('The state changed to: ', store.getState());
 })
 
+// Add a todo
 store.dispatch(
     {type: 'ADD_TODO', todo: {id: 0, name: 'Learn Redux', complete: false}})
+store.dispatch(
+    {type: 'ADD_TODO', todo: {id: 1, name: 'Read Book', complete: true}})
+store.dispatch(
+    {type: 'ADD_TODO', todo: {id: 2, name: 'Learn C++', complete: false}})
+
+// Remove a todo
+store.dispatch({type: 'REMOVE_TODO', id: 0})
+
+// Toggle a todo
+store.dispatch({type: 'TOGGLE_TODO', id: 1})
