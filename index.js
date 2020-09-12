@@ -33,16 +33,43 @@ function createStore(reducer) {
 // This is code a user would implement to define changes to the
 // state based on actions.
 
+const ADD_TODO = 'ADD_TODO';
+const REMOVE_TODO = 'REMOVE_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+const ADD_GOAL = 'ADD_GOAL';
+const REMOVE_GOAL = 'REMOVE_GOAL';
+
+// Action creator functions
+function addTodoAction(todo) {
+  return {type: ADD_TODO, todo};
+};
+
+function removeTodoAction(id) {
+  return {type: REMOVE_TODO, id};
+};
+
+function toggleTodoAction(id) {
+  return {type: TOGGLE_TODO, id};
+};
+
+function addGoalAction(goal) {
+  return {type: ADD_GOAL, goal};
+};
+
+function removeGoalAction(id) {
+  return {type: REMOVE_GOAL, id};
+};
+
 // Reducer function for Todos
 // Initialize state to an empty array, because the first time the
 // function is called, the state is undefined.
 function todos(state = [], action) {
   switch (action.type) {
-    case 'ADD_TODO':
+    case ADD_TODO:
       return state.concat([action.todo]);
-    case 'REMOVE_TODO':
+    case REMOVE_TODO:
       return state.filter(todo => todo.id !== action.id);
-    case 'TOGGLE_TODO':
+    case TOGGLE_TODO:
       return state.map(
           todo =>
               (todo.id !== action.id ?
@@ -58,9 +85,9 @@ function todos(state = [], action) {
 // function is called, the state is undefined.
 function goals(state = [], action) {
   switch (action.type) {
-    case 'ADD_GOAL':
+    case ADD_GOAL:
       return state.concat([action.goal]);
-    case 'REMOVE_GOAL':
+    case REMOVE_GOAL:
       return state.filter(goal => goal.id !== action.id);
     default:
       return state;
@@ -82,24 +109,20 @@ const unsubscribe = store.subscribe(() => {
 })
 
 // Add todos
-store.dispatch(
-    {type: 'ADD_TODO', todo: {id: 0, name: 'Learn Redux', complete: false}})
-store.dispatch(
-    {type: 'ADD_TODO', todo: {id: 1, name: 'Read Book', complete: true}})
-store.dispatch(
-    {type: 'ADD_TODO', todo: {id: 2, name: 'Learn C++', complete: false}})
+store.dispatch(addTodoAction({id: 0, name: 'Learn Redux', complete: false}));
+store.dispatch(addTodoAction({id: 1, name: 'Read Book', complete: true}));
+store.dispatch(addTodoAction({id: 2, name: 'Learn C++', complete: false}));
 
 // Add goals
-store.dispatch(
-    {type: 'ADD_GOAL', goal: {id: 0, name: 'Finish React Nanodegree'}})
-store.dispatch({type: 'ADD_GOAL', goal: {id: 1, name: 'Finish C++ Nanodegree'}})
-store.dispatch({type: 'ADD_GOAL', goal: {id: 2, name: 'Heal injury'}})
+store.dispatch(addGoalAction({id: 0, name: 'Finish React Nanodegree'}));
+store.dispatch(addGoalAction({id: 1, name: 'Finish C++ Nanodegree'}));
+store.dispatch(addGoalAction({id: 2, name: 'Heal injury'}));
 
 // Remove a todo
-store.dispatch({type: 'REMOVE_TODO', id: 0})
+store.dispatch(removeTodoAction(0))
 
 // Toggle a todo
-store.dispatch({type: 'TOGGLE_TODO', id: 1})
+store.dispatch(toggleTodoAction(1))
 
 // Remove a goal
-store.dispatch({type: 'REMOVE_GOAL', id: 0})
+store.dispatch(removeGoalAction(0))
