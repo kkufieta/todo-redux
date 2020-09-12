@@ -51,9 +51,11 @@ function todos(state = [], action) {
     default:
       return state;
   }
-}
+};
 
 // Reducer function for Goals
+// Initialize state to an empty array, because the first time the
+// function is called, the state is undefined.
 function goals(state = [], action) {
   switch (action.type) {
     case 'ADD_GOAL':
@@ -63,16 +65,23 @@ function goals(state = [], action) {
     default:
       return state;
   }
-}
+};
+
+// Root reducer for the entire App
+// Initialize state to an empty object, because the first time the
+// function is called, the state is undefined.
+function app(state = {}, action) {
+  return {todos: todos(state.todos, action), goals: goals(state.goals, action)};
+};
 
 // Use the store
-const store = createStore(todos);
+const store = createStore(app);
 
 const unsubscribe = store.subscribe(() => {
   console.log('The state changed to: ', store.getState());
 })
 
-// Add a todo
+// Add todos
 store.dispatch(
     {type: 'ADD_TODO', todo: {id: 0, name: 'Learn Redux', complete: false}})
 store.dispatch(
@@ -80,8 +89,17 @@ store.dispatch(
 store.dispatch(
     {type: 'ADD_TODO', todo: {id: 2, name: 'Learn C++', complete: false}})
 
+// Add goals
+store.dispatch(
+    {type: 'ADD_GOAL', goal: {id: 0, name: 'Finish React Nanodegree'}})
+store.dispatch({type: 'ADD_GOAL', goal: {id: 1, name: 'Finish C++ Nanodegree'}})
+store.dispatch({type: 'ADD_GOAL', goal: {id: 2, name: 'Heal injury'}})
+
 // Remove a todo
 store.dispatch({type: 'REMOVE_TODO', id: 0})
 
 // Toggle a todo
 store.dispatch({type: 'TOGGLE_TODO', id: 1})
+
+// Remove a goal
+store.dispatch({type: 'REMOVE_GOAL', id: 0})
