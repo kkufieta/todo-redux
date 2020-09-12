@@ -167,6 +167,9 @@ function addTodoToDOM(todo) {
   const node = document.createElement('li');
   const text = document.createTextNode(todo.name);
   node.appendChild(text);
+  node.style.textDecoration = todo.complete ? 'line-through' : 'none';
+  node.addEventListener(
+      'click', () => {store.dispatch(toggleTodoAction(todo.id))});
 
   document.getElementById('todos').appendChild(node);
 }
@@ -178,3 +181,5 @@ function addGoalToDOM(goal) {
 
   document.getElementById('goals').appendChild(node);
 }
+
+function toggleTodo() {}
