@@ -69,9 +69,8 @@ function goals(state = [], action) {
   }
 };
 
-function checker(store) {
-  return function(next) {
-    return function(action) {
+const checker =
+    (store) => (next) => (action) => {
       if ((action.type === ADD_TODO &&
            action.todo.name.toLowerCase().includes('bitcoin')) ||
           (action.type === ADD_GOAL &&
@@ -81,8 +80,6 @@ function checker(store) {
 
       return next(action);
     }
-  }
-}
 
 // Use the store
 const store = Redux.createStore(
