@@ -79,6 +79,18 @@ function goals(state = [], action) {
   }
 };
 
+// Reducer function for Loading Indicator
+// Initialize state to true, because we're starting out
+// with loading our data. Once finished loading, we return false.
+function loading(state = true, action) {
+  switch (action.type) {
+    case RECEIVE_DATA:
+      return false;
+    default:
+      return state;
+  }
+}
+
 // ---- MIDDLEWARE ----
 const checker =
     (store) => (next) => (action) => {
@@ -104,5 +116,5 @@ const logger =
 
 // ---- STORE ----
 const store = Redux.createStore(
-    Redux.combineReducers({todos, goals}),
+    Redux.combineReducers({todos, goals, loading}),
     Redux.applyMiddleware(checker, logger));
