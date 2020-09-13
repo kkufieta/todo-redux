@@ -165,5 +165,3 @@ function addGoalToDOM(goal) {
 
   document.getElementById('goals').appendChild(node);
 }
-
-function toggleTodo() {}
