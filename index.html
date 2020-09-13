@@ -70,6 +70,12 @@
 
         toggleItem = (todo) => {
             this.props.store.dispatch(toggleTodoAction(todo.id));
+
+            return API.saveTodoToggle(todo.id)
+                .catch(() => {
+                    this.props.store.dispatch(toggleTodoAction(todo.id));
+                    alert('An error occurred. Try again.');
+                })
         }
 
         render() {
