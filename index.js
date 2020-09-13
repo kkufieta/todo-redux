@@ -107,24 +107,28 @@ const unsubscribe = store.subscribe(() => {
 })
 
 // Add functions for the UI to interact with
-function addTodo() {
+function addTodo(event) {
+  event.preventDefault();
   const input = document.getElementById('todo');
   const name = input.value;
-  input.value = '';
-
-  store.dispatch(addTodoAction({id: generateId(), name, complete: false}));
+  if (name != '') {
+    input.value = '';
+    store.dispatch(addTodoAction({id: generateId(), name, complete: false}));
+  }
 }
 
-function addGoal() {
+function addGoal(event) {
+  event.preventDefault();
   const input = document.getElementById('goal');
   const name = input.value;
-  input.value = '';
-
-  store.dispatch(addGoalAction({id: generateId(), name}));
+  if (name != '') {
+    input.value = '';
+    store.dispatch(addGoalAction({id: generateId(), name}));
+  }
 }
 
-document.getElementById('todoBtn').addEventListener('click', addTodo)
-document.getElementById('goalBtn').addEventListener('click', addGoal)
+document.getElementById('todoForm').addEventListener('submit', addTodo)
+document.getElementById('goalForm').addEventListener('submit', addGoal)
 
 function createRemoveButton(onClick) {
   const removeBtn = document.createElement('button');
