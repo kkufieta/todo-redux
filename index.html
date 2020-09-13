@@ -41,15 +41,16 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.input.value = '';
-
-                this.props.store.dispatch(
-                    addTodoAction({
-                        id: generateId(),
-                        name,
-                        complete: false
+                return API.saveTodo(name)
+                    .then((todo) => {
+                        this.props.store.dispatch(
+                            addTodoAction(todo)
+                        );
+                        this.input.value = '';
                     })
-                );
+                    .catch(() => {
+                        alert('An error occurred. Try again.');
+                    })
             }
         }
 
@@ -107,14 +108,17 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.input.value = '';
-
-                this.props.store.dispatch(
-                    addGoalAction({
-                        id: generateId(),
-                        name
+                return API.saveGoal(name)
+                    .then((goal) => {
+                        this.props.store.dispatch(
+                            addGoalAction(goal)
+                        );
+                        this.input.value = '';
                     })
-                );
+                    .catch(e => {
+                        alert('An error occurred. Try again.')
+                    })
+
             }
         }
 
