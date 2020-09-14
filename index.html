@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/react-dom@16.3.0-alpha.1/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <script src="https://tylermcginnis.com/goals-todos-api/index.js"></script>
+    <script src="https://unpkg.com/redux-thunk@2.2.0/dist/redux-thunk.min.js"></script>
 </head>
 
 <body>
@@ -41,16 +42,8 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                return API.saveTodo(name)
-                    .then((todo) => {
-                        this.props.store.dispatch(
-                            addTodoAction(todo)
-                        );
-                        this.input.value = '';
-                    })
-                    .catch(() => {
-                        alert('An error occurred. Try again.');
-                    })
+                this.props.store.dispatch(handleAddTodo(name));
+                this.input.value = '';
             }
         }
 
