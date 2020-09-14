@@ -3,7 +3,7 @@
 function generateId() {
   return Math.random().toString(36).substring(2) +
       (new Date()).getTime().toString(36);
-}
+};
 
 // ---- ACTION TYPES ----
 const ADD_TODO = 'ADD_TODO';
@@ -38,7 +38,7 @@ function receiveDataAction(todos, goals) {
   return {
     type: RECEIVE_DATA, todos, goals
   }
-}
+};
 
 // Thunk action creator handlers
 // These functions make asynchronous API calls and
@@ -57,7 +57,7 @@ function handleAddTodo(name) {
           alert('An error occurred. Try again.');
         })
   };
-}
+};
 
 
 // ---- REDUCERS ----

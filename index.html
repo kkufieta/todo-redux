@@ -24,8 +24,11 @@
                         <span
                             onClick={() => props.toggle &&
                                 props.toggle(item)}
-                            style={{ textDecoration: item.complete ? 'line-through' : 'none' }}
-                        >
+                            style={{
+                                textDecoration: item.complete
+                                    ? 'line-through'
+                                    : 'none'
+                            }}>
                             {item.name}
                         </span>
                         <button onClick={() => props.remove(item)}>
@@ -59,7 +62,7 @@
                 .catch(() => {
                     this.props.store.dispatch(addTodoAction(todo));
                     alert('An error occurred. Try again.')
-                })
+                });
         }
 
         toggleItem = (todo) => {
@@ -69,7 +72,7 @@
                 .catch(() => {
                     this.props.store.dispatch(toggleTodoAction(todo.id));
                     alert('An error occurred. Try again.');
-                })
+                });
         }
 
         render() {
@@ -92,7 +95,7 @@
                         toggle={this.toggleItem}
                     />
                 </div>
-            )
+            );
         }
     }
 
@@ -110,8 +113,7 @@
                     })
                     .catch(e => {
                         alert('An error occurred. Try again.')
-                    })
-
+                    });
             }
         }
 
@@ -128,7 +130,7 @@
                 .catch(() => {
                     this.props.store.dispatch(addGoalAction(goal));
                     alert('An error occurred. Try again.')
-                })
+                });
         }
 
         render() {
@@ -150,14 +152,14 @@
                         remove={this.removeItem}
                     />
                 </div>
-            )
+            );
         }
     }
 
     class App extends React.Component {
         componentDidMount() {
             const { store } = this.props;
-            store.subscribe(() => this.forceUpdate())
+            store.subscribe(() => this.forceUpdate());
             Promise.all([
                 API.fetchTodos(),
                 API.fetchGoals()
@@ -173,7 +175,7 @@
             const { todos, goals, loading } = store.getState();
 
             if (loading) {
-                return <h1>Loading...</h1>
+                return <h1>Loading...</h1>;
             }
 
             return (
@@ -185,7 +187,7 @@
         }
     }
 
-    ReactDOM.render(<App store={store} />, document.getElementById('app'))
+    ReactDOM.render(<App store={store} />, document.getElementById('app'));
 </script>
 
 </html>
