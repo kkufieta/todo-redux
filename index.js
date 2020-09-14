@@ -73,7 +73,7 @@ function handleRemoveTodo(todo) {
       alert('An error occurred. Try again.')
     });
   };
-}
+};
 
 function handleToggleTodo(id) {
   return (dispatch) => {
@@ -84,8 +84,17 @@ function handleToggleTodo(id) {
       alert('An error occurred. Try again.');
     });
   };
-}
+};
 
+function handleAddGoal(name) {
+  return (dispatch) => {
+    return API.saveGoal(name)
+        .then((goal) => {
+          dispatch(addGoalAction(goal));
+        })
+        .catch(e => {alert('An error occurred. Try again.')});
+  };
+}
 
 // ---- REDUCERS ----
 // Reducer function for Todos

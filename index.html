@@ -87,16 +87,8 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                return API.saveGoal(name)
-                    .then((goal) => {
-                        this.props.store.dispatch(
-                            addGoalAction(goal)
-                        );
-                        this.input.value = '';
-                    })
-                    .catch(e => {
-                        alert('An error occurred. Try again.')
-                    });
+                this.props.store.dispatch(handleAddGoal(name));
+                this.input.value = '';
             }
         }
 
