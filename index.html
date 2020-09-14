@@ -45,8 +45,9 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.props.store.dispatch(handleAddTodo(name));
-                this.input.value = '';
+                this.props.store.dispatch(
+                    handleAddTodo(name, () => { this.input.value = '' })
+                );
             }
         }
 
@@ -87,8 +88,9 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.props.store.dispatch(handleAddGoal(name));
-                this.input.value = '';
+                this.props.store.dispatch(
+                    handleAddGoal(name, () => { this.input.value = '' })
+                );
             }
         }
 

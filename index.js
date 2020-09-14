@@ -47,15 +47,14 @@ function receiveDataAction(todos, goals) {
 // and handles it appropriately.
 // For an example for a thunk function, see the middleware portion
 // below.
-function handleAddTodo(name) {
+function handleAddTodo(name, resetInputToEmptyString) {
   return (dispatch) => {
     API.saveTodo(name)
         .then((todo) => {
           dispatch(addTodoAction(todo));
+          resetInputToEmptyString();
         })
-        .catch(() => {
-          alert('An error occurred. Try again.');
-        })
+        .catch(e => {alert('An error occurred. Try again.')})
   };
 };
 
@@ -86,11 +85,12 @@ function handleToggleTodo(id) {
   };
 };
 
-function handleAddGoal(name) {
+function handleAddGoal(name, resetInputToEmptyString) {
   return (dispatch) => {
     return API.saveGoal(name)
         .then((goal) => {
           dispatch(addGoalAction(goal));
+          resetInputToEmptyString();
         })
         .catch(e => {alert('An error occurred. Try again.')});
   };
