@@ -75,6 +75,17 @@ function handleRemoveTodo(todo) {
   };
 }
 
+function handleToggleTodo(id) {
+  return (dispatch) => {
+    dispatch(toggleTodoAction(id));
+
+    return API.saveTodoToggle(id).catch(() => {
+      dispatch(toggleTodoAction(id));
+      alert('An error occurred. Try again.');
+    });
+  };
+}
+
 
 // ---- REDUCERS ----
 // Reducer function for Todos
