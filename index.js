@@ -113,6 +113,16 @@ function handleRemoveGoal(goal) {
   };
 };
 
+function handleInitialData() {
+  return (dispatch) => {
+    Promise.all([API.fetchTodos(), API.fetchGoals()])
+        .then(([todos, goals]) => {
+          dispatch(receiveDataAction(todos, goals));
+        })
+        .catch(error => console.warn(error))
+  };
+};
+
 // ---- REDUCERS ----
 // Reducer function for Todos
 // Initialize state to an empty array, because the first time the
