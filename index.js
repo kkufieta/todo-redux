@@ -59,6 +59,22 @@ function handleAddTodo(name) {
   };
 };
 
+function handleRemoveTodo(todo) {
+  return (dispatch) => {
+    // Implements optimistic update
+    // Delete item from UI first
+    dispatch(removeTodoAction(todo.id));
+    // Attempt to delete item from DB next.
+    // If successful, great!
+    // If the attempt fails, we'll add our todo back into the list
+    // and alert the user.
+    return API.deleteTodo(todo.id).catch(() => {
+      dispatch(addTodoAction(todo));
+      alert('An error occurred. Try again.')
+    });
+  };
+}
+
 
 // ---- REDUCERS ----
 // Reducer function for Todos
