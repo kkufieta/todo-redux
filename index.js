@@ -94,7 +94,24 @@ function handleAddGoal(name) {
         })
         .catch(e => {alert('An error occurred. Try again.')});
   };
-}
+};
+
+function handleRemoveGoal(goal) {
+  return (dispatch) => {
+    // Implements optimistic update
+    // Delete item from UI first
+    dispatch(removeGoalAction(goal.id));
+    // Attempt to delete item from DB next.
+    // If successful, great!
+    // If the attempt fails, we'll add our todo back into the list
+    // and alert the user.
+
+    return API.deleteGoal(goal.id).catch(() => {
+      dispatch(addGoalAction(goal));
+      alert('An error occurred. Try again.')
+    });
+  };
+};
 
 // ---- REDUCERS ----
 // Reducer function for Todos
