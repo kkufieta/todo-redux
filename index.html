@@ -45,21 +45,22 @@
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.props.store.dispatch(
+                this.props.dispatch(
                     handleAddTodo(name, () => { this.input.value = '' })
                 );
             }
         }
 
         removeItem = (todo) => {
-            this.props.store.dispatch(handleRemoveTodo(todo));
+            this.props.dispatch(handleRemoveTodo(todo));
         }
 
         toggleItem = (todo) => {
-            this.props.store.dispatch(handleToggleTodo(todo.id));
+            this.props.dispatch(handleToggleTodo(todo.id));
         }
 
         render() {
+            console.log('in todos, todos: ', this.props.todos)
             return (
                 <div>
                     <h1>Todo List</h1>
@@ -83,19 +84,33 @@
         }
     }
 
+    class ConnectedTodos extends React.Component {
+        render() {
+            return (
+                <Context.Consumer>
+                    {(store) => {
+                        const { todos } = store.getState();
+                        console.log('in connectedtodos: todos: ', todos);
+                        return <Todos todos={todos} dispatch={store.dispatch} />;
+                    }}
+                </Context.Consumer>
+            )
+        }
+    }
+
     class Goals extends React.Component {
         addItem = (event) => {
             event.preventDefault();
             const name = this.input.value;
             if (name != '') {
-                this.props.store.dispatch(
+                this.props.dispatch(
                     handleAddGoal(name, () => { this.input.value = '' })
                 );
             }
         }
 
         removeItem = (goal) => {
-            this.props.store.dispatch(handleRemoveGoal(goal));
+            this.props.dispatch(handleRemoveGoal(goal));
         }
 
         render() {
@@ -121,6 +136,22 @@
         }
     }
 
+    class ConnectedGoals extends React.Component {
+        render() {
+            return (
+                <Context.Consumer>
+                    {(store) => {
+                        const { goals } = store.getState();
+                        console.log('in connectedgoals: goals: ', goals);
+                        return <Goals goals={goals} dispatch={store.dispatch} />;
+
+                    }}
+                </Context.Consumer>
+            )
+        }
+    }
+
+
     class App extends React.Component {
         componentDidMount() {
             const { store } = this.props;
@@ -130,7 +161,7 @@
 
         render() {
             const { store } = this.props;
-            const { todos, goals, loading } = store.getState();
+            const { loading } = store.getState();
 
             if (loading) {
                 return <h1>Loading...</h1>;
@@ -138,14 +169,64 @@
 
             return (
                 <div>
-                    <Todos todos={todos} store={this.props.store} />
-                    <Goals goals={goals} store={this.props.store} />
+                    <ConnectedTodos />
+                    <ConnectedGoals />
                 </div>
             );
         }
     }
 
-    ReactDOM.render(<App store={store} />, document.getElementById('app'));
+    class ConnectedApp extends React.Component {
+        render() {
+            return (
+                <Context.Consumer>
+                    {(store) => (
+                        <App store={store} />
+                    )}
+                </Context.Consumer>
+            )
+        }
+    }
+
+    // Context connects React + Redux in a way where
+    // we don't have to pass data through props to child
+    // components.
+    const Context = React.createContext();
+
+    class Provider extends React.Component {
+        render() {
+            return (
+                <Context.Provider value={this.props.store}>
+                    {this.props.children}
+                </Context.Provider>
+            )
+        }
+    }
+
+    // This is an example for the syntax of a connected
+    // component. Those components grab the data given by
+    // the provider and give it to their child component,
+    // which is a presentational component (only dealing)
+    // with UI, not with handling data).
+    /*
+    class ConnectedComponent extends React.Component {
+        render() {
+            return (
+                <Context.Consumer>
+                    {(store) => {
+                        <ChildComponent store={store} />
+                    }}
+                </Context.Consumer>
+            )
+        }
+    }
+    */
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <ConnectedApp />
+        </Provider>,
+        document.getElementById('app'));
 </script>
 
 </html>
